@@ -237,7 +237,6 @@ function buildSingleDay(day = null, type = null) {
         // Get day/month
         let dateFull = day.split('-')
         let date = type === 'en' ? `${dateFull[0]}-${dateFull[1]}` : `${dateFull[1]}/${dateFull[0]}`
-        console.log(date)
 
         // Read forecast to find selected date
         $(forecast).each(function () {
