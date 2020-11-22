@@ -1,0 +1,293 @@
+// -----------------------------------------------
+// Google fonts api import
+// -----------------------------------------------
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&display=swap");
+
+// -----------------------------------------------
+// Colors variables
+// -----------------------------------------------
+$purple: #775ada;
+$blue: #28c7fa;
+$grey-1: #d9d9d9;
+$white: #ffffff;
+
+// -----------------------------------------------
+// Media queries variables
+// -----------------------------------------------
+$media-sm: "screen and (min-width: 576px)";
+$media-md: "screen and (min-width: 768px)";
+
+// -----------------------------------------------
+// Custom styles
+// -----------------------------------------------
+body {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+strong {
+    font-weight: 600;
+}
+
+// Main container
+.app {
+    header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 56px 24px 0;
+
+        img {
+            width: 100%;
+            max-width: 240px;
+
+            @media #{$media-sm} {
+                max-width: 400px;
+            }
+        }
+    }
+
+    main {
+        display: flex;
+        align-items: center;
+        min-height: 100vh;
+        padding: 56px 0 72px;
+    }
+
+    footer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 40px;
+        padding: 12px 8px;
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: lighten($color: $blue, $amount: 35);
+        -webkit-box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.15);
+        -moz-box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.15);
+        box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.15);
+
+        p {
+            margin-bottom: 0;
+            text-align: center;
+        }
+    }
+}
+
+// Single day container
+.single {
+    border-bottom: 1px solid $grey-1;
+
+    @media #{$media-md} {
+        border-bottom: 0;
+    }
+}
+
+// Calendar container
+.calendar {
+    // Container with week days
+    .calendar-box {
+        .container-fluid {
+            padding: 0;
+        }
+
+        .plus {
+            display: none;
+        }
+
+        &.show-plus {
+            .plus {
+                display: block;
+            }
+        }
+    }
+}
+
+// Days card
+.day {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid $purple;
+    border-radius: 5px;
+    margin: 8px 0;
+    background-color: $white;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+    overflow: hidden;
+
+    @media #{$media-sm} {
+        flex-direction: column;
+        height: calc(100% - 16px);
+        padding: 16px;
+    }
+
+    &:hover {
+        background-color: lighten($color: $purple, $amount: 35);
+    }
+
+    // Week day and date
+    .day-date {
+        display: flex;
+        flex-direction: column;
+        padding-right: 16px;
+        border-right: 1px solid $purple;
+
+        @media #{$media-sm} {
+            flex-direction: row;
+            align-items: flex-end;
+            padding-right: 0;
+            border: 0;
+
+            > * {
+                &:not(:last-child) {
+                    margin-right: 4px;
+                }
+            }
+        }
+
+        &:not(:last-child) {
+            margin-right: 16px;
+
+            @media #{$media-sm} {
+                margin-right: 0;
+                margin-bottom: 16px;
+            }
+        }
+
+        .day-week {
+            font-size: 16px;
+        }
+
+        .day-month {
+            font-size: 22px;
+        }
+    }
+
+    // Icon
+    .day-icon {
+        min-width: 56px;
+        max-width: 56px;
+        margin: 0;
+
+        @media #{$media-sm} {
+            min-width: 96px;
+            max-width: 96px;
+        }
+
+        &:not(:last-child) {
+            margin-right: 24px;
+
+            @media #{$media-sm} {
+                margin-right: 0;
+                margin-bottom: 16px;
+            }
+        }
+
+        img {
+            width: 100%;
+        }
+    }
+
+    // Min/Max and info text
+    .day-info {
+        .temperature {
+            display: flex;
+
+            @media #{$media-sm} {
+                justify-content: center;
+            }
+
+            &:not(:last-child) {
+                @media #{$media-sm} {
+                    margin-bottom: 8px;
+                }
+            }
+
+            .temperature-item {
+                &:not(:last-child) {
+                    margin-right: 16px;
+                }
+
+                .value {
+                    display: block;
+                    font-size: 22px;
+                }
+            }
+        }
+
+        .info {
+            margin: 0;
+            font-size: 14px;
+
+            @media #{$media-md} {
+                text-align: center;
+            }
+        }
+    }
+
+    &.single {
+        border-color: $blue;
+        margin: 0 auto;
+        cursor: initial;
+
+        @media #{$media-sm} {
+            max-width: 320px;
+            padding: 24px;
+        }
+
+        &:hover {
+            background-color: lighten($color: $blue, $amount: 35);
+        }
+
+        .day-icon {
+            @media #{$media-sm} {
+                min-width: 140px;
+                max-width: 140px;
+            }
+        }
+
+        .day-date {
+            border-color: $blue;
+
+            .day-week {
+                @media #{$media-sm} {
+                    font-size: 20px;
+                }
+            }
+
+            .day-month {
+                @media #{$media-sm} {
+                    font-size: 26px;
+                }
+            }
+        }
+
+        .day-info {
+            .temperature {
+                .temperature-item {
+                    @media #{$media-sm} {
+                        font-size: 20px;
+                    }
+
+                    .value {
+                        @media #{$media-sm} {
+                            font-size: 24px;
+                        }
+                    }
+                }
+            }
+
+            .info {
+                @media #{$media-sm} {
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+}
