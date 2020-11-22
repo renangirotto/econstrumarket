@@ -4,7 +4,10 @@ app._init = function () {
     app._setDate()
     app._setForecast()
     app._filters()
-    app._dayCard()
+
+    setTimeout(function () {
+        app._dayCard()
+    }, 1000)
 
     console.log('Custom Scripts Ready!')
 }
@@ -62,7 +65,6 @@ app._setDate = function () {
 app._setForecast = function () {
     // Check if there is data in the local storage
     let hasForecast = localStorage.getItem('hasForecast')
-    console.log(hasForecast)
 
     if (hasForecast != null) {
         // If there is data verify if the data is 24 hours+ old
@@ -132,7 +134,17 @@ app._filters = function () {
 
     // Control filter date on change
     filterDate.on('change', function () {
-        buildSingleDay(this.value)
+        let selectedDay = this.value
+        let forecast = JSON.parse(localStorage.getItem('forecast'))
+        let dayMonth = forecast[0].date
+        // Verify if date is in american style
+        if (dayMonth.includes('-')) {
+            // Build single day
+            buildSingleDay(`${selectedDay.split('-')[1]}-${selectedDay.split('-')[2]}`, 'en')
+        } else if (dayMonth.includes('/')) {
+            // Build single day
+            buildSingleDay(`${selectedDay.split('-')[1]}-${selectedDay.split('-')[2]}`)
+        }
     });
 }
 
@@ -152,12 +164,18 @@ app._dayCard = function () {
         // Get day/month based on target
         let forecast = JSON.parse(localStorage.getItem('forecast'))
         let dayMonth = forecast[target].date
-        // Set full year
-        let fullyear = `${year}-${dayMonth.split('/')[1]}-${dayMonth.split('/')[0]}`
-        // Build single day
-        buildSingleDay(fullyear)
-        // Set input date
-        dateInput.attr('value', fullyear)
+        // Verify if date is in american style
+        if (dayMonth.includes('-')) {
+            // Build single day
+            buildSingleDay(`${dayMonth.split('-')[0]}-${dayMonth.split('-')[1]}`, 'en')
+            // Set input date
+            dateInput.attr('value', `${year}-${dayMonth.split('-')[0]}-${dayMonth.split('-')[1]}`)
+        } else if (dayMonth.includes('/')) {
+            // Build single day
+            buildSingleDay(`${dayMonth.split('/')[1]}-${dayMonth.split('/')[0]}`)
+            // Set input date
+            dateInput.attr('value', `${year}-${dayMonth.split('/')[1]}-${dayMonth.split('/')[0]}`)
+        }
     })
 }
 
@@ -180,7 +198,7 @@ function buildForecast() {
                 $('<div>').addClass('day').attr('data-day', index).append(
                     $('<div>').addClass('day-date').append(
                         $('<span>').addClass('day-week').text(`${item.weekday}.`),
-                        $('<strong>').addClass('day-month').text(item.date)
+                        $('<strong>').addClass('day-month').text(item.date.replace('-', '/'))
                     ),
                     $('<figure>').addClass('day-icon').append(
                         $('<img>').attr('src', `assets/svg/${item.condition}.svg`)
@@ -205,7 +223,7 @@ function buildForecast() {
 }
 
 // Build for single day content
-function buildSingleDay(day = null) {
+function buildSingleDay(day = null, type = null) {
     // Get calendar container
     const container = $('#singleBox')
     // Get forecast data in local storage
@@ -218,7 +236,8 @@ function buildSingleDay(day = null) {
     if (day != null) {
         // Get day/month
         let dateFull = day.split('-')
-        let date = `${dateFull[2]}/${dateFull[1]}`
+        let date = type === 'en' ? `${dateFull[0]}-${dateFull[1]}` : `${dateFull[1]}/${dateFull[0]}`
+        console.log(date)
 
         // Read forecast to find selected date
         $(forecast).each(function () {
@@ -239,7 +258,7 @@ function buildSingleDay(day = null) {
             $('<div>').addClass('day single').append(
                 $('<div>').addClass('day-date').append(
                     $('<span>').addClass('day-week').text(`${item.weekday}.`),
-                    $('<strong>').addClass('day-month').text(item.date)
+                    $('<strong>').addClass('day-month').text(item.date.replace('-', '/'))
                 ),
                 $('<figure>').addClass('day-icon').append(
                     $('<img>').attr('src', `assets/svg/${item.condition}.svg`)
